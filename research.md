@@ -1,3 +1,5 @@
-- explore math/big pacakge
-- explore builtin pacakge
-  
+- explore math/big pacakge --> https://pkg.go.dev/math/big@go1.18.4
+- explore math/rand
+- explore builtin pacakge --> https://pkg.go.dev/builtin
+- create a int assign a bug number and convert it to int8 --> research how does it converts.
+- check strconv package to see more conversions and encodings, parsings

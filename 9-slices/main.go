@@ -87,6 +87,7 @@ func main() {
 	slice7 := arr[:]                 // array to slice
 	changeValOfSlice(arr[:], 0, 100) // passing arr as an argument to the slice
 	fmt.Println("Slice7", slice7)
+	fmt.Println("Array", arr)
 
 }
 

@@ -3,3 +3,4 @@
 - explore builtin pacakge --> https://pkg.go.dev/builtin
 - create a int assign a bug number and convert it to int8 --> research how does it converts.
 - check strconv package to see more conversions and encodings, parsings
+- explore more about 21-panic example call stack arguments (addresses)

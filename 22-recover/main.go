@@ -6,21 +6,21 @@ type any = interface{}
 
 func main() {
 	// fmt.Println("Divid by zero", 10/0)
-	v := 0
-	defer func() {
+	//v := 0
+	/*defer func() {
 		if r := recover(); r != nil {
 			fmt.Println(r)
 		}
-	}()
+	}()*/
 	defer fmt.Println("Hello World ends!")
 	fn := new(string)
 	*fn = "Jiten"
 	func() {
-		fullName(fn, nil)
+		fullName(nil, nil)
 		defer fmt.Println("Divid by zero end")
-		fmt.Println("Divid by zero start")
-		fmt.Println("Divid by zero", 10/v)
-		fmt.Println("Checking; Does this work becasue of panic in fullName?")
+		//fmt.Println("Divid by zero start")
+		//fmt.Println("Divid by zero", 10/v)
+		//fmt.Println("Checking; Does this work becasue of panic in fullName?")
 	}()
 
 	fmt.Println("Hello World starts!")
@@ -31,9 +31,11 @@ func recoverFullName() {
 		case PanicData:
 			pd := r.(PanicData)
 			fmt.Println("Data:", pd.Data, "Error", pd.Error)
+			//fmt.Println("Recovering from fullname")
+			//fmt.Println(r)
+		default:
+			fmt.Println(r)
 		}
-		//fmt.Println("Recovering from fullname")
-		//fmt.Println(r)
 	}
 }
 

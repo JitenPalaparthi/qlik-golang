@@ -5,3 +5,5 @@
 - Is using len in the loop a good performer?
 
 - Project written i 1.18 , does it work on 1.17?
+
+- What is the use of TryLock in mutex

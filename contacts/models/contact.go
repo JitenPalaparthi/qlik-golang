@@ -1,14 +1,16 @@
 package models
 
+import "encoding/json"
+
 type Contact struct {
 	ID           int    `json:"id"`
 	Name         string `json:"name"`
 	Email        string `json:"email"`
 	Address      string `json:"address"`
-	ContactNo    string `json:"contactNo"`
-	MoreInfo     string `json:"moreInfo"`
+	ContactNo    string `json:"contactNo" gorm:"column:contactNo"`
+	MoreInfo     string `json:"moreInfo" gorm:"column:moreInfo"`
 	Status       string `json:"status"`
-	LastModified string `json:"lastModified"`
+	LastModified string `json:"lastModified" gorm:"column:lastModified"`
 }
 
 // if Name is name then it is considered as unexported field
@@ -27,4 +29,16 @@ func (c *Contact) Validate() error {
 	}
 
 	return nil
+}
+
+func (c *Contact) ToByte() ([]byte, error) {
+	return json.Marshal(c)
+}
+
+func (c *Contact) ToJSONString() (string, error) {
+	buf, err := json.Marshal(c)
+	if err != nil {
+		return "", err
+	}
+	return string(buf), nil
 }

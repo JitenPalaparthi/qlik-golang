@@ -6,7 +6,7 @@ import (
 
 type IContact interface {
 	Create(contact *models.Contact) (*models.Contact, error)
-	UpdateBy(id string) (*models.Contact, error)
+	UpdateBy(id string, data map[string]interface{}) (*models.Contact, error)
 	GetBy(id string) (*models.Contact, error)
 	DeleteBy(id string) (interface{}, error)
 }
@@ -17,3 +17,11 @@ type IContact interface {
 // 4- kubernetes secretes are not actually secrets . They are just base64 encoded
 // 5- Does your application work with out kubernetes?
 // 6- go-client/kube-client --> to access configmaps/secrets
+
+// Tooling
+// CI pipelines or CD perspective
+// go generate
+// gomock-->
+// swagger-->
+// grpc -->
+// readyGo -->

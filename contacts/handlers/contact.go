@@ -39,3 +39,60 @@ func (c *Contact) Create() func(*gin.Context) {
 		}
 	}
 }
+
+func (c *Contact) GetBy() func(*gin.Context) {
+	return func(ctx *gin.Context) {
+		id, ok := ctx.Params.Get("id")
+		if !ok {
+			ctx.JSON(http.StatusBadRequest, gin.H{"status": 400, "innerError": "invalid id parameter", "message": "invalid id parameter"})
+			return
+		}
+
+		contact, err := c.IContact.GetBy(id)
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"status": 400, "innerError": err.Error(), "message": "bad request"})
+			return
+		}
+		ctx.JSON(http.StatusOK, contact)
+	}
+}
+
+func (c *Contact) DeleteBy() func(*gin.Context) {
+	return func(ctx *gin.Context) {
+		id, ok := ctx.Params.Get("id")
+		if !ok {
+			ctx.JSON(http.StatusBadRequest, gin.H{"status": 400, "innerError": "invalid id parameter", "message": "invalid id parameter"})
+			return
+		}
+
+		noOfRecords, err := c.IContact.DeleteBy(id)
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"status": 400, "innerError": err.Error(), "message": "bad request"})
+			return
+		}
+		ctx.JSON(http.StatusAccepted, noOfRecords)
+	}
+}
+
+func (c *Contact) UpdateBy() func(*gin.Context) {
+	return func(ctx *gin.Context) {
+		id, ok := ctx.Params.Get("id")
+		if !ok {
+			ctx.JSON(http.StatusBadRequest, gin.H{"status": 400, "innerError": "invalid id parameter", "message": "invalid id parameter"})
+			return
+		}
+		data := make(map[string]interface{})
+		err := ctx.Bind(&data)
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"status": 400, "innerError": err.Error(), "message": "bad request"})
+			return
+		}
+
+		contact, err := c.IContact.UpdateBy(id, data)
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"status": 400, "innerError": err.Error(), "message": "bad request"})
+			return
+		}
+		ctx.JSON(http.StatusOK, contact)
+	}
+}

@@ -1,7 +1,9 @@
+//go:generate mockgen.exe -source=../interfaces/contact.go -destination=contactDB_mock.go -package=database
 package database
 
 import (
 	"contacts/models"
+	"strconv"
 
 	"gorm.io/gorm"
 )
@@ -22,12 +24,37 @@ func (cdb *ContactDB) Create(contact *models.Contact) (*models.Contact, error) {
 	return contact, nil
 }
 
-func (cdb *ContactDB) UpdateBy(id string) (*models.Contact, error) {
-	return nil, nil
+func (cdb *ContactDB) UpdateBy(id string, data map[string]interface{}) (*models.Contact, error) {
+	contact := new(models.Contact)
+	_id, err := strconv.Atoi(id)
+	if err != nil {
+		return nil, err
+	}
+	contact.ID = _id
+	tx := cdb.DB.(*gorm.DB).Model(contact).Updates(data)
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+	contact, err = cdb.GetBy(id)
+	if err != nil {
+		return nil, err
+	}
+
+	return contact, nil
 }
 func (cdb *ContactDB) GetBy(id string) (*models.Contact, error) {
-	return nil, nil
+	contact := new(models.Contact)
+	tx := cdb.DB.(*gorm.DB).First(contact, id)
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+	return contact, nil
 }
+
 func (cdb *ContactDB) DeleteBy(id string) (interface{}, error) {
-	return nil, nil
+	tx := cdb.DB.(*gorm.DB).Delete(&models.Contact{}, id)
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+	return tx.RowsAffected, nil
 }

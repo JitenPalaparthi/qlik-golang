@@ -15,6 +15,12 @@ type Contact struct {
 
 // if Name is name then it is considered as unexported field
 
+type IContactModel interface {
+	Validate() error
+	ToByte() ([]byte, error)
+	ToJSONString() (string, error)
+}
+
 func (c *Contact) Validate() error {
 	if c.Name == "" {
 		return ErrInvalidName

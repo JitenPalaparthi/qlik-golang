@@ -1,9 +1,10 @@
 package main
 
 import (
-	"contacts/filedb"
+	"contacts/database"
 	"contacts/handlers"
 	"flag"
+	"log"
 	"os"
 
 	"github.com/gin-gonic/gin"
@@ -29,14 +30,16 @@ func init() {
 
 func main() {
 
-	// session, err := database.GetConnection(DSN)
-	// if err != nil {
-	// 	panic(err)
-	// }
+	log.Println("Contact Microservice started! about run on PORT", PORT)
+	session, err := database.GetConnection(DSN)
+	log.Println("Connecting to the database")
+	if err != nil {
+		log.Fatalln(err)
+	}
 
-	//cdb := &database.ContactDB{DB: session}
+	cdb := &database.ContactDB{DB: session}
 
-	cdb := &filedb.ContactFDB{DB: "contacts.fdb"}
+	//cdb := &filedb.ContactFDB{DB: "contacts.fdb"}
 
 	// contact := &models.Contact{Name: "Jiten", Email: "Jitenp@outlook.com", Address: "Rajajinagar, Bangalore", MoreInfo: "Testing contact", ContactNo: "9618558500", Status: "Created", LastModified: fmt.Sprint(time.Now().Unix())}
 
@@ -59,10 +62,13 @@ func main() {
 
 	chandler := handlers.Contact{IContact: cdb}
 
-	r.POST("/v1/contact/create", chandler.Create())
+	v1contactGroup := r.Group("/v1/contact")
+	v1contactGroup.POST("/create", chandler.Create())
+	v1contactGroup.GET("/get/:id", chandler.GetBy())
+	v1contactGroup.PUT("/update/:id", chandler.UpdateBy())
+	v1contactGroup.DELETE("/delete/:id", chandler.DeleteBy())
 
-	r.Run(":" + PORT) // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
-
+	log.Fatal(r.Run(":" + PORT)) // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }
 
 // :50050 what is the ip address?

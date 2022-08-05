@@ -1,0 +1,53 @@
+syntax = "proto3";
+import "google/protobuf/struct.proto";
+
+option go_package = "contacts/protos";
+
+service Contact{
+    rpc Create(ContactMessageRequest)returns(GeneralResponse){};
+    rpc GetBy(ContactByIDRequest) returns (ContactMessage){};
+    rpc GetAll(ContactGetAllRequest) returns (ContactGetAllResponse){};
+    rpc UpdateBy(ContactUpdateRequest) returns (ContactMessage){};
+    rpc DeleteBy(ContactByIDRequest) returns (GeneralResponse){};
+} 
+
+message ContactGetAllResponse{
+    repeated ContactMessage Contacts=1;
+}
+message ContactMessageRequest{
+    string Name=2;
+    string Email=3;
+    string Address=4;
+    string ContactNo=5;
+    string MoreInfo=6;
+}
+
+message ContactMessage{
+    int64 ID=1;
+    string Name=2;
+    string Email=3;
+    string Address=4;
+    string ContactNo=5;
+    string MoreInfo=6;
+    string Status=7;
+    string LastModified=8;
+}
+
+message ContactUpdateRequest{
+    string ID =1;
+    google.protobuf.Struct Data=2;
+}
+
+message ContactGetAllRequest{
+    int Limit=1;
+    int Skip=2;
+}
+
+message ContactByIDRequest{
+    string ID =1;
+}
+message GeneralResponse{
+    int64 Code=1;
+    string Message=2;
+    string InnerMessage=3;
+}

@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+option go_package = "demo/protos";
+
+package protos;
+service HelloService {
+    rpc SayHello (HelloRequest) returns (stream HelloResponse);
+  }
+  
+  message HelloRequest {
+    string greeting = 1;
+  }
+  
+  message HelloResponse {
+    string reply = 1;
+  }
+
+/*protoc --go_out=. --go_opt=paths=source_relative \
+    --go-grpc_out=. --go-grpc_opt=paths=source_relative \
+    protos/hello.proto*/

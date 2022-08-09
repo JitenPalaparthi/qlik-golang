@@ -58,3 +58,13 @@ func (cdb *ContactDB) DeleteBy(id string) (interface{}, error) {
 	}
 	return tx.RowsAffected, nil
 }
+
+func (cdb *ContactDB) GetAllByStatus(status string) ([]models.Contact, error) {
+	contacts := make([]models.Contact, 0)
+
+	tx := cdb.DB.(*gorm.DB).Where(&models.Contact{Status: status}).First(&contacts)
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+	return contacts, nil
+}

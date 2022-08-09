@@ -2,7 +2,9 @@ package handlers
 
 import (
 	"contacts/interfaces"
+	"contacts/messaging"
 	"contacts/models"
+	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -11,7 +13,8 @@ import (
 )
 
 type Contact struct {
-	IContact interfaces.IContact
+	IContact         interfaces.IContact
+	MessageBrokerURL string
 }
 
 func (c *Contact) Create() func(*gin.Context) {
@@ -34,6 +37,21 @@ func (c *Contact) Create() func(*gin.Context) {
 			ctx.JSON(http.StatusBadRequest, gin.H{"status": 400, "innerError": err.Error(), "message": "Error in creating contact info"})
 			return
 		} else {
+			msg := new(messaging.Message)
+			msg.URL = c.MessageBrokerURL
+			msg.Subject = "contact.create"
+			data, err := contact.ToByte()
+			if err != nil {
+				ctx.JSON(http.StatusBadRequest, gin.H{"status": 400, "innerError": err.Error(), "message": "Error in creating contact info"})
+				return
+			}
+			msg.Data = data
+			err = msg.Publish()
+			fmt.Println(err)
+			if err != nil {
+				ctx.JSON(http.StatusBadRequest, gin.H{"status": 400, "innerError": err.Error(), "message": "Error in creating contact info"})
+				return
+			}
 			ctx.JSON(http.StatusCreated, con)
 			return
 		}

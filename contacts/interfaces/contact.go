@@ -8,6 +8,7 @@ type IContact interface {
 	Create(contact *models.Contact) (*models.Contact, error)
 	UpdateBy(id string, data map[string]interface{}) (*models.Contact, error)
 	GetBy(id string) (*models.Contact, error)
+	GetAllByStatus(status string) ([]models.Contact, error)
 	DeleteBy(id string) (interface{}, error)
 }
 

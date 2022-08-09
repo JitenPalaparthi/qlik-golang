@@ -1,4 +1,4 @@
-package main1
+package main
 
 import (
 	"contacts/database"
@@ -11,13 +11,16 @@ import (
 )
 
 var (
-	PORT string
-	DSN  string
+	PORT       string
+	DSN        string
+	MESSAGEURL = "nats://127.0.0.1:4222"
 )
 
 func init() {
 	PORT = os.Getenv("PORT")
 	DSN = "host=localhost user=contactsdb_user password=contactsdb_admin dbname=contactsdb port=5432 sslmode=disable TimeZone=Asia/Shanghai"
+	flag.StringVar(&MESSAGEURL, "msgbroker", `nats://127.0.0.1:4222`, "--msgbroker=valid message broker connection string")
+
 }
 
 func init() {
@@ -60,7 +63,7 @@ func main() {
 
 	// contacts api
 
-	chandler := handlers.Contact{IContact: cdb}
+	chandler := handlers.Contact{IContact: cdb, MessageBrokerURL: "nats://localhost:4222"}
 
 	v1contactGroup := r.Group("/v1/contact")
 	v1contactGroup.POST("/create", chandler.Create())

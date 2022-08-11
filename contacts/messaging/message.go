@@ -64,7 +64,7 @@ func (m *Message) Subscribe() error {
 		fmt.Println("--->", string(m.Data))
 		// todo stuff here
 		//m.Respond([]byte("answer is 42"))
-		m.Sub.Unsubscribe()
+		//m.Sub.Unsubscribe()
 	})
 
 	return err

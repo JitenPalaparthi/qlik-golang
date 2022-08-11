@@ -1,6 +1,6 @@
 FROM golang
 
-ENV PORT 50091
+ENV PORT 50080
 
 WORKDIR /app
 
@@ -8,5 +8,8 @@ COPY . .
 
 RUN go mod tidy
 
-CMD ["go" ,"run", "main.go"]
+EXPOSE ${PORT}
+
+ENTRYPOINT [ "go","run","main.go"]
+
 

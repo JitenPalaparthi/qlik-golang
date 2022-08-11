@@ -5,7 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"time"
+	"runtime"
 )
 
 var (
@@ -33,12 +33,17 @@ func main() {
 	msg := new(messaging.Message)
 	msg.URL = "nats://localhost:4222"
 	msg.Subject = "contact.create"
-	for {
-		time.Sleep(time.Second * 1)
-		fmt.Println("Subscribing---")
-		err := msg.Subscribe()
-		if err != nil {
-			fmt.Println(err)
-		}
+	//for {
+	//time.Sleep(time.Second * 1)
+	fmt.Println("Subscribing---")
+	err := msg.Subscribe()
+	if err != nil {
+		fmt.Println(err)
 	}
+	//}
+	runtime.Goexit()
 }
+
+/*Publish --> Topic/Subject
+Process --> Subscribe a topic, process it and publish to another topic
+Subscribe --> Reads from the Topic do some stuff*/

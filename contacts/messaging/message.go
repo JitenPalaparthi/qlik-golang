@@ -50,7 +50,7 @@ func (m *Message) Publish() error {
 func (m *Message) Subscribe() error {
 	nc, err := nats.Connect(m.URL)
 	fmt.Println(nc.ConnectedAddr())
-	//defer nc.Close()
+	defer nc.Close()
 	if err != nil {
 		return err
 	}

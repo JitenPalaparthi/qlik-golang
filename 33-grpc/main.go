@@ -14,6 +14,7 @@ type server struct {
 
 func (s *server) SayHello(in *pb.HelloRequest, stream pb.HelloService_SayHelloServer) error {
 	for i := 0; i <= 5; i++ {
+
 		out := &pb.HelloResponse{Reply: "Hello-->" + fmt.Sprint(i)}
 		if err := stream.Send(out); err != nil {
 			return err
